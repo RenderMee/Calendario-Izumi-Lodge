@@ -278,13 +278,13 @@
 <details class="sheet-panel" id="sheetPanel">
   <summary>⚙ Configurar Google Sheets (opcional)</summary>
   <div class="sheet-inner">
-    <div>
-      <div style="font-size:11px;color:var(--muted);margin-bottom:4px;text-transform:uppercase;letter-spacing:.05em;">ID del Google Sheet público</div>
-      <input type="text" id="sheetId" placeholder="Ej: 1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgVE2upms" />
+    <div style="flex:1;">
+      <div style="font-size:11px;color:var(--muted);margin-bottom:4px;text-transform:uppercase;letter-spacing:.05em;">Link CSV de Google Sheets (Archivo → Compartir → Publicar en la web → CSV)</div>
+      <input type="text" id="sheetId" placeholder="https://docs.google.com/spreadsheets/d/e/2PACX-.../pub?output=csv" />
     </div>
     <button class="btn-sm btn-sm-primary" onclick="loadFromSheet()">Cargar datos</button>
   </div>
-  <div class="sheet-status" id="sheetStatus">Ingresa el ID del sheet y presiona Cargar. El sheet debe ser público (ver instrucciones en README.md).</div>
+  <div class="sheet-status" id="sheetStatus">Pega el link CSV que obtienes al publicar el sheet en la web y presiona Cargar.</div>
 </details>
 
 <div id="calView">
@@ -606,11 +606,12 @@ function importData(e) {
 // Sheet format: columns → name | type | start(YYYY-MM-DD) | end(YYYY-MM-DD) | note
 // Sheet must be published to web (File > Share > Publish to web > CSV)
 async function loadFromSheet() {
-  const sheetId = document.getElementById('sheetId').value.trim();
-  if (!sheetId) { alert('Ingresa el ID del sheet.'); return; }
+  const input = document.getElementById('sheetId').value.trim();
+  if (!input) { alert('Pega el link CSV del sheet.'); return; }
   const status = document.getElementById('sheetStatus');
   status.textContent = 'Cargando...';
-  const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv&sheet=Reservaciones`;
+  const url = input.startsWith('http') ? input :
+    `https://docs.google.com/spreadsheets/d/${input}/gviz/tq?tqx=out:csv&sheet=Reservaciones`;
   try {
     const res  = await fetch(url);
     const text = await res.text();
