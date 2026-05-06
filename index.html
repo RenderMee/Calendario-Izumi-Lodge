@@ -369,17 +369,6 @@ const COLORS = {
 function nextId() { return Date.now() + Math.floor(Math.random()*1000); }
 
 let reservations = JSON.parse(localStorage.getItem('rentas_cal') || '[]');
-if (!reservations.length) {
-  // sample data
-  const y = today.getFullYear(), m = today.getMonth()+1;
-  const pad = n => String(n).padStart(2,'0');
-  reservations = [
-    { id: 1, name: 'María García', type: 'airbnb',  start: `${y}-${pad(m)}-03`, end: `${y}-${pad(m)}-07`, note: 'Familia de 4, check-in 3pm' },
-    { id: 2, name: 'John Smith',   type: 'booking', start: `${y}-${pad(m)}-12`, end: `${y}-${pad(m)}-16`, note: 'Solicita toallas extra' },
-    { id: 3, name: 'Carlos & Ana', type: 'amigo',   start: `${y}-${pad(m)}-20`, end: `${y}-${pad(m)}-23`, note: 'Tarifa especial' },
-  ];
-  save();
-}
 
 function save() { localStorage.setItem('rentas_cal', JSON.stringify(reservations)); }
 
